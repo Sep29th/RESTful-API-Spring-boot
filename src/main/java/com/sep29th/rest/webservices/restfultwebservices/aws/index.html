@@ -1,0 +1,22 @@
+<form id="form">
+  <input type="file" name="file" />
+  <button type="submit">Upload</button>
+</form>
+<div id="images"></div>
+<script defer>
+  var images = document.getElementById("images");
+  document.getElementById("form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    var formData = new FormData(event.target);
+    var fileField = document.querySelector('input[type="file"]');
+    formData.append("file", fileField.files[0]);
+    fetch("http://localhost:8080/upload-file", {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+      "Content-Type": "multipart/form-data",
+    }).then((_) => {
+      images.innerHTML = `<img src="http://localhost:8080/download-file" />`;
+    });
+  });
+</script>

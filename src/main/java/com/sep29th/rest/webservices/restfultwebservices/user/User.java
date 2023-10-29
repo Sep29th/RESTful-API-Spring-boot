@@ -1,60 +1,87 @@
 package com.sep29th.rest.webservices.restfultwebservices.user;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+//@JsonIgnoreProperties
+@Entity(name = "User_details")
 public class User {
-	private int id;
-	@Size(min = 2, message = "Username must have more than 2 characters")
-	private String name;
-	@Past(message = "Birth Date have to in the past")
-	private LocalDate birthDate;
+    //	@JsonIgnore
+    @Id
+    @GeneratedValue
+    private Integer id;
+    @Size(min = 2, message = "Username must have more than 2 characters")
+//    @JsonProperty(name = "user_name")
+    private String name;
+    @Past(message = "Birth Date have to in the past")
+    private LocalDate birthDate;
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
 
-	@JsonCreator
-	public User(@JsonProperty("name") String name, @JsonProperty("birthDate") LocalDate birthDate) {
-		super();
-		this.name = name;
-		this.birthDate = birthDate;
-	}
+    @JsonCreator
+    public User(@JsonProperty("name") String name, @JsonProperty("birthDate") LocalDate birthDate) {
+        super();
+        this.name = name;
+        this.birthDate = birthDate;
+    }
 
-	public User(int id, String name, LocalDate birthDate) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.birthDate = birthDate;
-	}
+    public User() {
+    }
 
-	public int getId() {
-		return id;
-	}
+    public User(Integer id, String name, LocalDate birthDate) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.birthDate = birthDate;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public List<Post> getPosts() {
+        return posts;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", birthDate=" + birthDate + "]";
+    }
 }
